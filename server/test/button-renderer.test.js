@@ -1,7 +1,7 @@
 // server/test/button-renderer.test.js
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderButton, renderEmptyButton } from '../button-renderer.js';
+import { renderButton, renderEmptyButton, svgToDataUri } from '../button-renderer.js';
 
 describe('renderButton', () => {
   it('returns an SVG string', () => {
@@ -67,5 +67,15 @@ describe('renderEmptyButton', () => {
     const svg = renderEmptyButton();
     assert.ok(svg.startsWith('<svg'));
     assert.ok(svg.includes('rgb(30,30,30)'));
+  });
+});
+
+describe('svgToDataUri', () => {
+  it('converts SVG to base64 data URI', () => {
+    const svg = '<svg></svg>';
+    const uri = svgToDataUri(svg);
+    assert.ok(uri.startsWith('data:image/svg+xml;base64,'));
+    const decoded = Buffer.from(uri.split(',')[1], 'base64').toString();
+    assert.equal(decoded, svg);
   });
 });
