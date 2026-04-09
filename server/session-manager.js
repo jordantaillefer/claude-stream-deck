@@ -36,7 +36,7 @@ export class SessionManager {
   }
 
   getAll() {
-    return [...this.sessions.values()];
+    return [...this.sessions.values()].map(s => ({ ...s }));
   }
 
   getByButtonIndex(index) {
