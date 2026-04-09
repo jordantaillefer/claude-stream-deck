@@ -74,8 +74,8 @@ function connectToStreamDeck() {
       const buttonIndex = contextButtons.get(msg.context);
       if (buttonIndex !== undefined) {
         const session = buttonSessions.get(buttonIndex);
-        if (session?.session?.session) {
-          switchToTab(session.session.session);
+        if (session?.session?.buttonIndex !== undefined) {
+          switchToTab(session.session.buttonIndex + 1);
         }
       }
     }
@@ -98,21 +98,9 @@ function sendImage(context, imageDataUri) {
   }
 }
 
-function switchToTab(sessionName) {
-  // Search for the tab whose name contains the session/project name
-  // The hooks set iTerm2 tab titles to "[project-name] Claude - ..."
-  const script = `
-tell application "iTerm2"
-  activate
-  tell current window
-    repeat with t in tabs
-      if name of t contains "${sessionName}" then
-        select t
-        return
-      end if
-    end repeat
-  end tell
-end tell`;
+function switchToTab(tabIndex) {
+  const script = `tell application "iTerm2" to activate
+tell application "iTerm2" to tell current window to select tab ${tabIndex}`;
   execFile('osascript', ['-e', script], (err) => {
     if (err) console.error('AppleScript error:', err.message);
   });
