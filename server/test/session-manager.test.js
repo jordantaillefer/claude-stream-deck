@@ -51,4 +51,20 @@ describe('SessionManager', () => {
     const session = manager.getByButtonIndex(0);
     assert.equal(session.session, 'project-a');
   });
+
+  it('uses tabIndex as buttonIndex when provided', () => {
+    const session = manager.update({
+      session: 'project-a',
+      state: 'idle',
+      color: { r: 0, g: 200, b: 0 },
+      tabIndex: 3,
+    });
+    assert.equal(session.buttonIndex, 3);
+  });
+
+  it('updates buttonIndex when tabIndex changes', () => {
+    manager.update({ session: 'project-a', state: 'idle', color: { r: 0, g: 200, b: 0 }, tabIndex: 2 });
+    const session = manager.update({ session: 'project-a', state: 'thinking', color: { r: 30, g: 100, b: 255 }, tabIndex: 4 });
+    assert.equal(session.buttonIndex, 4);
+  });
 });
