@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "UUID": "com.claude.streamdeck",
+  "Version": "1.0.0.0",
+  "Name": "Claude Code Monitor",
+  "Description": "Real-time monitoring of Claude Code sessions with one-tap iTerm2 tab switching",
+  "Author": "Jordan Taillefer",
+  "Icon": "images/plugin-icon",
+  "CategoryIcon": "images/plugin-icon",
+  "Category": "Claude Code",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "6.6"
+  },
+  "Nodejs": {
+    "Version": "20",
+    "Debug": "enabled"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "13"
+    }
+  ],
+  "Actions": [
+    {
+      "UUID": "com.claude.streamdeck.session",
+      "Name": "Claude Session",
+      "Icon": "images/action-icon",
+      "PropertyInspectorPath": "property-inspector/pi.html",
+      "Controllers": ["Keypad"],
+      "States": [
+        {
+          "Image": "images/action-icon",
+          "Title": "Claude",
+          "ShowTitle": true,
+          "TitleAlignment": "bottom",
+          "TitleColor": "#FFFFFF"
+        }
+      ],
+      "VisibleInActionsList": true
+    }
+  ]
+}
