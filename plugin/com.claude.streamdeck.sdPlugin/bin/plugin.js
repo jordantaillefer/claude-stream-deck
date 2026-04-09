@@ -52,7 +52,7 @@ function connectToStreamDeck() {
 
     if (msg.event === 'willAppear') {
       const { column, row } = msg.payload.coordinates;
-      const buttonIndex = row * 4 + column; // 4 columns x 3 rows = 12 buttons
+      const buttonIndex = row * 3 + column; // Galleon 100 SD: 3 columns x 4 rows = 12 buttons
       buttonContexts.set(buttonIndex, msg.context);
       contextButtons.set(msg.context, buttonIndex);
 
