@@ -43,7 +43,12 @@ function connectToStreamDeck() {
   });
 
   sdSocket.on('message', (raw) => {
-    const msg = JSON.parse(raw.toString());
+    let msg;
+    try {
+      msg = JSON.parse(raw.toString());
+    } catch {
+      return;
+    }
 
     if (msg.event === 'willAppear') {
       const { column, row } = msg.payload.coordinates;
@@ -69,7 +74,7 @@ function connectToStreamDeck() {
       const buttonIndex = contextButtons.get(msg.context);
       if (buttonIndex !== undefined) {
         const session = buttonSessions.get(buttonIndex);
-        if (session) {
+        if (session?.session?.buttonIndex !== undefined) {
           switchToTab(session.session.buttonIndex + 1);
         }
       }
@@ -80,7 +85,7 @@ function connectToStreamDeck() {
     setTimeout(connectToStreamDeck, RECONNECT_INTERVAL);
   });
 
-  sdSocket.on('error', () => {});
+  sdSocket.on('error', (err) => console.error('SD WebSocket error:', err.message));
 }
 
 function sendImage(context, imageDataUri) {
@@ -109,7 +114,12 @@ function connectToServer() {
   serverSocket = new WebSocket(SERVER_URL);
 
   serverSocket.on('message', (raw) => {
-    const msg = JSON.parse(raw.toString());
+    let msg;
+    try {
+      msg = JSON.parse(raw.toString());
+    } catch {
+      return;
+    }
 
     if (msg.type === 'state_update') {
       const { session, image } = msg;
@@ -128,7 +138,7 @@ function connectToServer() {
     setTimeout(connectToServer, RECONNECT_INTERVAL);
   });
 
-  serverSocket.on('error', () => {});
+  serverSocket.on('error', (err) => console.error('Server WebSocket error:', err.message));
 }
 
 // --- Start ---
