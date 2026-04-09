@@ -2,9 +2,10 @@
 import http from 'node:http';
 import { WebSocketServer } from 'ws';
 import { SessionManager } from './session-manager.js';
-import { renderButton, renderEmptyButton, svgToDataUri } from './button-renderer.js';
+import { renderButton, svgToDataUri } from './button-renderer.js';
 
 const DEFAULT_PORT = 7842;
+const MAX_BODY_SIZE = 10 * 1024; // 10 KB
 
 export function createServer(port = DEFAULT_PORT) {
   const sessionManager = new SessionManager();
@@ -19,7 +20,14 @@ export function createServer(port = DEFAULT_PORT) {
 
     if (req.method === 'POST' && req.url === '/state') {
       let body = '';
-      req.on('data', (chunk) => (body += chunk));
+      req.on('data', (chunk) => {
+        body += chunk;
+        if (body.length > MAX_BODY_SIZE) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          req.destroy();
+        }
+      });
       req.on('end', () => {
         try {
           const data = JSON.parse(body);
@@ -78,6 +86,7 @@ export function createServer(port = DEFAULT_PORT) {
     }
 
     ws.on('close', () => wsClients.delete(ws));
+    ws.on('error', () => {});
   });
 
   return { server, sessionManager, wsClients };
