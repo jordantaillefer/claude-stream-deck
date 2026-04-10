@@ -30,10 +30,13 @@ export function renderButton({ session, state, color, detail }) {
   const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
   const textColor = luminance > 140 ? '#000' : '#fff';
 
+  const icon = renderIcon(state, textColor);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
   <rect width="${SIZE}" height="${SIZE}" rx="12" fill="rgb(${r},${g},${b})" />
-  <text x="${SIZE / 2}" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="${textColor}">${name}</text>
-  <text x="${SIZE / 2}" y="100" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="${textColor}" opacity="0.85">${bottomText}</text>
+  <text x="${SIZE / 2}" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="${textColor}">${name}</text>
+  ${icon}
+  <text x="${SIZE / 2}" y="122" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="${textColor}" opacity="0.85">${bottomText}</text>
 </svg>`;
 }
 

@@ -62,6 +62,70 @@ describe('renderButton', () => {
   });
 });
 
+describe('renderButton with state icons', () => {
+  const STATE_TO_ICON = {
+    idle: 'moon',
+    thinking: 'brain',
+    tool_use: 'wrench',
+    permission: 'shield-alert',
+    error: 'alert-triangle',
+    done: 'check-circle',
+  };
+
+  for (const [state, iconName] of Object.entries(STATE_TO_ICON)) {
+    it(`renders the ${iconName} icon for state "${state}"`, () => {
+      const svg = renderButton({
+        session: 'proj',
+        state,
+        color: { r: 30, g: 100, b: 255 },
+      });
+      assert.ok(
+        svg.includes(`data-icon="${iconName}"`),
+        `expected data-icon="${iconName}" in SVG for state ${state}`
+      );
+    });
+  }
+
+  it('omits the icon block for an unknown state but still renders a valid SVG', () => {
+    const svg = renderButton({
+      session: 'proj',
+      state: 'mystery',
+      color: { r: 30, g: 100, b: 255 },
+    });
+    assert.ok(svg.startsWith('<svg'));
+    assert.ok(svg.includes('</svg>'));
+    assert.ok(!svg.includes('data-icon='));
+  });
+
+  it('uses white stroke on dark backgrounds', () => {
+    const svg = renderButton({
+      session: 'proj',
+      state: 'idle',
+      color: { r: 30, g: 30, b: 30 },
+    });
+    assert.ok(svg.includes('stroke="#fff"'));
+  });
+
+  it('uses black stroke on bright backgrounds', () => {
+    const svg = renderButton({
+      session: 'proj',
+      state: 'idle',
+      color: { r: 255, g: 255, b: 0 },
+    });
+    assert.ok(svg.includes('stroke="#000"'));
+  });
+
+  it('uses the new font sizes (18 for name, 14 for state)', () => {
+    const svg = renderButton({
+      session: 'proj',
+      state: 'idle',
+      color: { r: 30, g: 100, b: 255 },
+    });
+    assert.ok(svg.includes('font-size="18"'));
+    assert.ok(svg.includes('font-size="14"'));
+  });
+});
+
 describe('renderEmptyButton', () => {
   it('returns a dark SVG', () => {
     const svg = renderEmptyButton();
