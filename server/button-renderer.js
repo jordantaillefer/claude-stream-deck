@@ -1,4 +1,6 @@
 // server/button-renderer.js
+import { STATE_ICONS } from './icons.js';
+
 const SIZE = 144;
 const MAX_NAME_LEN = 10;
 
@@ -9,6 +11,15 @@ function truncate(str, max) {
 
 function escapeXml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+export function renderIcon(state, textColor) {
+  const icon = STATE_ICONS[state];
+  if (!icon) return '';
+  const paths = icon.paths
+    .map((d) => `<path d="${d}" stroke="${textColor}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />`)
+    .join('');
+  return `<g data-icon="${icon.name}" transform="translate(52, 56) scale(1.6667)">${paths}</g>`;
 }
 
 export function renderButton({ session, state, color, detail }) {
