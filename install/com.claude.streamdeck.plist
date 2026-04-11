@@ -6,8 +6,8 @@
     <string>com.claude.streamdeck.server</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/jordantaillefer/.nvm/versions/node/v24.9.0/bin/node</string>
-        <string>/Users/jordantaillefer/Documents/Projets/claude-stream-deck/server/index.js</string>
+        <string>__NODE_BIN__</string>
+        <string>__PROJECT_DIR__/server/index.js</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

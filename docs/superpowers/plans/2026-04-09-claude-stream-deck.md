@@ -109,7 +109,7 @@ describe('SessionManager', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck && node --test server/test/session-manager.test.js`
+Run: `cd <repo> && node --test server/test/session-manager.test.js`
 Expected: FAIL — `Cannot find module '../session-manager.js'`
 
 - [ ] **Step 3: Write minimal implementation**
@@ -168,7 +168,7 @@ export class SessionManager {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck && node --test server/test/session-manager.test.js`
+Run: `cd <repo> && node --test server/test/session-manager.test.js`
 Expected: All 6 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -263,7 +263,7 @@ describe('renderEmptyButton', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck && node --test server/test/button-renderer.test.js`
+Run: `cd <repo> && node --test server/test/button-renderer.test.js`
 Expected: FAIL — `Cannot find module '../button-renderer.js'`
 
 - [ ] **Step 3: Write minimal implementation**
@@ -312,7 +312,7 @@ export function svgToDataUri(svg) {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck && node --test server/test/button-renderer.test.js`
+Run: `cd <repo> && node --test server/test/button-renderer.test.js`
 Expected: All 7 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -351,7 +351,7 @@ git commit -m "feat: add SVG button renderer for Stream Deck"
 
 - [ ] **Step 2: Run npm install**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck/server && npm install`
+Run: `cd <repo>/server && npm install`
 Expected: `ws` installed, `node_modules` created, `package-lock.json` generated.
 
 - [ ] **Step 3: Create .gitignore**
@@ -459,7 +459,7 @@ describe('Server', () => {
 
 - [ ] **Step 5: Run test to verify it fails**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck/server && node --test test/server.test.js`
+Run: `cd <repo>/server && node --test test/server.test.js`
 Expected: FAIL — `Cannot find module '../index.js'` or `createServer is not a function`
 
 - [ ] **Step 6: Write the server implementation**
@@ -562,12 +562,12 @@ if (isMain) {
 
 - [ ] **Step 7: Run test to verify it passes**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck/server && node --test test/server.test.js`
+Run: `cd <repo>/server && node --test test/server.test.js`
 Expected: All 4 tests pass.
 
 - [ ] **Step 8: Run all server tests together**
 
-Run: `cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck/server && npm test`
+Run: `cd <repo>/server && npm test`
 Expected: All tests pass (session-manager + button-renderer + server).
 
 - [ ] **Step 9: Commit**
@@ -643,7 +643,7 @@ git commit -m "feat: add HTTP + WebSocket server for state updates"
 Generate minimal 144x144 and 72x72 PNG icons using Node.js. These are simple colored squares — functional placeholders.
 
 ```bash
-cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck
+cd <repo>
 node -e "
 const { writeFileSync } = require('fs');
 const { mkdirSync } = require('fs');
@@ -858,8 +858,8 @@ git commit -m "feat: add Stream Deck plugin with session monitoring and tab swit
     <string>com.claude.streamdeck.server</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/jordantaillefer/.nvm/versions/node/v24.9.0/bin/node</string>
-        <string>/Users/jordantaillefer/Documents/Projets/claude-stream-deck/server/index.js</string>
+        <string>__NODE_BIN__</string>
+        <string><repo>/server/index.js</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -933,7 +933,7 @@ echo "Next: Open the Stream Deck app, drag 'Claude Session' buttons onto your pr
 
 - [ ] **Step 3: Make install.sh executable**
 
-Run: `chmod +x /Users/jordantaillefer/Documents/Projets/claude-stream-deck/install/install.sh`
+Run: `chmod +x <repo>/install/install.sh`
 
 - [ ] **Step 4: Commit**
 
@@ -1003,7 +1003,7 @@ Where `$tool` is extracted from the JSON input (already done in the existing hoo
 
 Start the server:
 ```bash
-cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck/server && node index.js &
+cd <repo>/server && node index.js &
 ```
 
 Test the curl:
@@ -1040,7 +1040,7 @@ Note: `~/.claude/settings.json` is outside the project repo. No git commit for t
 - [ ] **Step 1: Run install script**
 
 ```bash
-cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck && ./install/install.sh
+cd <repo> && ./install/install.sh
 ```
 
 - [ ] **Step 2: Verify server is running**
@@ -1082,7 +1082,7 @@ Expected: First button should turn blue with "my-project" text.
 - [ ] **Step 7: Commit any final adjustments**
 
 ```bash
-cd /Users/jordantaillefer/Documents/Projets/claude-stream-deck
+cd <repo>
 git add -A
 git commit -m "fix: adjustments from end-to-end testing"
 ```

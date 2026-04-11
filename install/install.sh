@@ -26,15 +26,23 @@ fi
 ln -s "$PLUGIN_SRC" "$PLUGIN_DST"
 echo "  Symlinked plugin to $PLUGIN_DST"
 
-# 3. Install launchd plist
+# 3. Install launchd plist (with placeholder substitution)
 echo "[3/5] Installing launchd service..."
 if launchctl list | grep -q com.claude.streamdeck.server 2>/dev/null; then
   echo "  Unloading existing service..."
   launchctl unload "$PLIST_DST" 2>/dev/null || true
 fi
-cp "$PLIST_SRC" "$PLIST_DST"
+NODE_BIN="$(command -v node)"
+if [ -z "$NODE_BIN" ]; then
+  echo "  ERROR: node not found in PATH — install Node.js first." >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$PLIST_DST")"
+sed -e "s|__NODE_BIN__|$NODE_BIN|g" \
+    -e "s|__PROJECT_DIR__|$PROJECT_DIR|g" \
+    "$PLIST_SRC" > "$PLIST_DST"
 launchctl load "$PLIST_DST"
-echo "  Service installed and started"
+echo "  Service installed and started (node: $NODE_BIN)"
 
 # 4. Install iTerm2 tab-index helper
 echo "[4/5] Installing Claude Code hook helper..."
