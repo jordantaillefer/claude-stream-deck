@@ -141,18 +141,6 @@ function connectToServer() {
   serverSocket.on('error', (err) => console.error('Server WebSocket error:', err.message));
 }
 
-// Keepalive: periodically re-push visible button images to prevent
-// the Stream Deck from entering a low-power state (firmware ignores the
-// app's "never sleep" setting and dims/wakes with a Corsair splash after
-// idle). Every 15s we re-send the current image of each visible button.
-const KEEPALIVE_INTERVAL = 15_000;
-setInterval(() => {
-  for (const [buttonIndex, context] of buttonContexts.entries()) {
-    const session = buttonSessions.get(buttonIndex);
-    if (session?.image) sendImage(context, session.image);
-  }
-}, KEEPALIVE_INTERVAL);
-
 // --- Start ---
 
 connectToStreamDeck();
