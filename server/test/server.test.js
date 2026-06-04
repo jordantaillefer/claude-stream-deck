@@ -67,6 +67,26 @@ describe('Server', () => {
     assert.equal(res.status, 400);
   });
 
+  it('accepts POST /state without color and derives it from state', async () => {
+    const res = await httpPost(port, '/state', {
+      session: 'no-color',
+      state: 'thinking',
+    });
+    assert.equal(res.status, 200);
+    const ws = new WebSocket(`ws://127.0.0.1:${port}/streamdeck`);
+    const message = await new Promise((resolve) => {
+      ws.on('message', (data) => {
+        const parsed = JSON.parse(data.toString());
+        if (parsed.session && parsed.session.session === 'no-color') {
+          resolve(parsed);
+          ws.close();
+        }
+      });
+    });
+    // thinking → blue {30,100,255}, derived server-side
+    assert.deepEqual(message.session.color, { r: 30, g: 100, b: 255 });
+  });
+
   it('pushes state updates to WebSocket clients on /streamdeck', async () => {
     const ws = new WebSocket(`ws://127.0.0.1:${port}/streamdeck`);
     const message = await new Promise((resolve) => {

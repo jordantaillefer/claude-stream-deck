@@ -3,6 +3,7 @@ import http from 'node:http';
 import { WebSocketServer } from 'ws';
 import { SessionManager } from './session-manager.js';
 import { renderButton, svgToDataUri } from './button-renderer.js';
+import { colorForState } from './icons.js';
 
 const DEFAULT_PORT = 7842;
 const MAX_BODY_SIZE = 10 * 1024; // 10 KB
@@ -31,13 +32,15 @@ export function createServer(port = DEFAULT_PORT) {
       req.on('end', () => {
         try {
           const data = JSON.parse(body);
-          if (!data.session || !data.state || !data.color) {
+          if (!data.session || !data.state) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Missing required fields: session, state, color' }));
+            res.end(JSON.stringify({ error: 'Missing required fields: session, state' }));
             return;
           }
 
-          const session = sessionManager.update(data);
+          // color is optional — derive it from state when the hook omits it.
+          const color = data.color || colorForState(data.state);
+          const session = sessionManager.update({ ...data, color });
           if (!session) {
             res.writeHead(429, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Max sessions reached (12)' }));

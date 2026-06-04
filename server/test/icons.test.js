@@ -1,7 +1,7 @@
 // server/test/icons.test.js
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { STATE_ICONS } from '../icons.js';
+import { STATE_ICONS, STATE_COLORS, colorForState } from '../icons.js';
 
 const EXPECTED_STATES = ['idle', 'thinking', 'tool_use', 'permission', 'error', 'done'];
 
@@ -28,5 +28,20 @@ describe('STATE_ICONS', () => {
         assert.ok(p.length > 0, `${state} has an empty path string`);
       }
     }
+  });
+});
+
+describe('colorForState', () => {
+  it('returns a color for every known state', () => {
+    for (const state of EXPECTED_STATES) {
+      const c = colorForState(state);
+      assert.ok(STATE_COLORS[state], `missing color for state "${state}"`);
+      assert.deepEqual(c, STATE_COLORS[state]);
+    }
+  });
+
+  it('falls back to a neutral gray for unknown states', () => {
+    const c = colorForState('nonsense');
+    assert.deepEqual(c, { r: 120, g: 120, b: 120 });
   });
 });

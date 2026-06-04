@@ -56,3 +56,21 @@ export const STATE_ICONS = {
     ],
   },
 };
+
+// State → button color. Lets hooks post just a `state` and have the server
+// derive the color, mirroring the iTerm2 tab badge brightness values the hooks
+// also set via OSC. Hooks may still send an explicit `color` to override.
+export const STATE_COLORS = {
+  idle: { r: 0, g: 200, b: 0 },
+  thinking: { r: 30, g: 100, b: 255 },
+  tool_use: { r: 30, g: 100, b: 255 },
+  permission: { r: 255, g: 165, b: 0 },
+  error: { r: 255, g: 0, b: 0 },
+  done: { r: 0, g: 200, b: 0 },
+};
+
+const DEFAULT_COLOR = { r: 120, g: 120, b: 120 };
+
+export function colorForState(state) {
+  return STATE_COLORS[state] || DEFAULT_COLOR;
+}
